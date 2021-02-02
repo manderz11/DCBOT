@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Version>0.1.0</Version>
+    <Authors>manderz11</Authors>
+    <Description>Yes</Description>
+    <PackageIcon>app .png</PackageIcon>
+    <SignAssembly>false</SignAssembly>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DSharpPlus" Version="4.0.0-rc1" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="4.0.0-rc1" />
+    <PackageReference Include="DSharpPlus.Interactivity" Version="4.0.0-rc1" />
+    <PackageReference Include="DSharpPlus.Rest" Version="4.0.0-rc1" />
+    <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>
