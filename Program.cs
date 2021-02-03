@@ -22,6 +22,7 @@ namespace DCBOT
     {
         public static string globalPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static string globalConfig = @$"{globalPath}\Config";
+        public static string globalExtraFiles = $@"{globalPath}\extrafiles";
         public static string ownerUsername = getConfig("Owner");
 
         static void Main(string[] args)
@@ -88,11 +89,6 @@ namespace DCBOT
             });
 
             var interact = discord.UseInteractivity(new InteractivityConfiguration()
-            {
-
-            });
-
-            var voicasync =  discord.UseVoiceNext(new VoiceNextConfiguration()
             {
 
             });
