@@ -26,7 +26,6 @@ namespace DCBOT
 
         static void Main(string[] args)
         {
-            Console.WriteLine(getConfig("Token"));
             MainAsync().GetAwaiter().GetResult();
         }
 
