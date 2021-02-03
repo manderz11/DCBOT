@@ -13,27 +13,26 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.VoiceNext;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace DCBOT
 {
     public class Program
     {
-        // path example - C:/ProgramFiles/DCbot
-        public static string globalPath = @"FullPath";
-        public static string jsonPath = $@"{globalPath}\CustomJson";
-        // your discord username or owners username
-        // not compatible with multiple usernames yet!
-        public static string ownerUsername = "Username";
+        public static string globalPath = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static string globalConfig = @$"{globalPath}\Config";
+        public static string ownerUsername = getConfig("Owner");
 
         static void Main(string[] args)
         {
+            Console.WriteLine(getConfig("Token"));
             MainAsync().GetAwaiter().GetResult();
         }
 
-        static string getToken()
+        static string getConfig(string type)
         {
-            string path = $@"{jsonPath}\Token.json";
+            string path = globalConfig + ".json";
             if (File.Exists(path))
             {
                 string result = string.Empty;
@@ -48,21 +47,38 @@ namespace DCBOT
                     result = jobj.ToString();
                 }
                 var userObj = JObject.Parse(result);
-                var jsonvalue = Convert.ToString(userObj["jsonvalue"]);
-                return jsonvalue;
+                var jsonval = Convert.ToString(userObj[type]);
+                return jsonval;
+            }
+            else if (!File.Exists(path))
+            {
+                defaultconfig f = new defaultconfig()
+                {
+                    Token = "TokenHere",
+                    Owner = "Owner username here"
+                };
+                string stringjson = JsonConvert.SerializeObject(f);
+                using (var tw = new StreamWriter(path, true))
+                {
+                    tw.WriteLine(stringjson.ToString());
+                    tw.Close();
+                    Console.WriteLine("config created in directory, go configure it.");
+                    Console.WriteLine("app will shutdown after enter...");
+                    Console.Read();
+                    Environment.Exit(1);
+                    return string.Empty;
+                }
             }
             else
             {
-               Console.WriteLine("no token json, storing in source code is unsafe if published");
-               return string.Empty; 
+                return "fail";
             }
         }
-
         static async Task MainAsync()
         {
             var discord = new DiscordClient(new DiscordConfiguration()
             {
-                Token = getToken(),
+                Token = getConfig("Token"),
                 TokenType = TokenType.Bot,
                 MinimumLogLevel = LogLevel.Debug
             });
@@ -87,5 +103,11 @@ namespace DCBOT
             await Task.Delay(-1);
 
         }
+    }
+
+    class defaultconfig
+    {
+        public string Token { get; set; }
+        public string Owner { get; set; }
     }
 }
