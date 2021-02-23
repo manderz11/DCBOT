@@ -16,7 +16,10 @@ public class Pog : BaseCommandModule
     [Command("pog")]
     public async Task CuteCommand(CommandContext ctx)
     {
-        await ctx.RespondWithFileAsync(@"extrafiles\Pog.png");
+        var msg = await new DiscordMessageBuilder()
+            .WithContent("Pog")
+            .WithFile(@"extrafiles\Pog.png")
+            .SendAsync(ctx.Channel);
     }
 }
 
