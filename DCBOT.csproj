@@ -7,7 +7,7 @@
     <Version>0.1.0</Version>
     <Authors>manderz11</Authors>
     <Description>Yes</Description>
-    <PackageIcon>app .png</PackageIcon>
+    <PackageIcon>app.png</PackageIcon>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
@@ -24,6 +24,11 @@
     <PackageReference Include="DSharpPlus.VoiceNext" Version="4.0.0-rc2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.30" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1-beta1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="builds\releases\" />
+    <Folder Include="builds\tests\" />
   </ItemGroup>
 
 </Project>
