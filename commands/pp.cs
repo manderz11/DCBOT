@@ -13,7 +13,7 @@ using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using HtmlAgilityPack;
 
-public class BeatSaberCommands : BaseCommandModule
+public class pp : BaseCommandModule
 {
     [Command("pp")]
     public async Task CuteCommand(CommandContext ctx, [RemainingText] string urll)
