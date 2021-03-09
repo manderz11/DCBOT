@@ -21,13 +21,9 @@ jobs:
       run: dotnet build
     - name: Test
       run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
-    - name: Create Artifact Folder
-      run: New-Item -Path '${{ github.workspace }}' -Name "Artifacts" -ItemType "directory"
-    - name: Copy Artifacts
-      run: Copy '' '${{ github.workspace }}/Artifacts'
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v2
       with:
           name: dotnet-results-${{ matrix.dotnet-version }}
-          path: ${{ github.workspace }}/Artifacts
+          path: ${{ github.workspace }}
       if: ${{ always() }}
