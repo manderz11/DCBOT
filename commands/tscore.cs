@@ -16,7 +16,8 @@ using HtmlAgilityPack;
 public class tscore : BaseCommandModule
 {
     [Command("tscore")]
-    public async Task CuteCommand(CommandContext ctx, [RemainingText] string urll)
+    [Description("Pulls the top score from Score Saber")]
+    public async Task CuteCommand(CommandContext ctx, [RemainingText][Description("The Score Saber profile url")] string urll)
     {
         HtmlWeb web = new HtmlWeb();
         HtmlDocument doc = web.Load($"{urll}");

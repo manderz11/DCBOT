@@ -12,7 +12,8 @@ using DSharpPlus.Entities;
 public class Cute : BaseCommandModule
 {
     [Command("cute")]
-    public async Task CuteCommand(CommandContext ctx, [RemainingText] string name)
+    [Description("Says the input name/mention is cute :3")]
+    public async Task CuteCommand(CommandContext ctx, [RemainingText][Description("The object/name or mention")] string name)
     {
         await ctx.RespondAsync($"{name} is cute :3");
         await ctx.Message.DeleteAsync();

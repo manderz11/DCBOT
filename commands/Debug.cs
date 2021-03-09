@@ -16,9 +16,10 @@ using Microsoft.Extensions.Logging;
 public class Log : BaseCommandModule
 {
     [Command("log")]
-    public async Task CuteCommand(CommandContext ctx,[RemainingText] string message)
+    [Description("Sends a log in console")]
+    public async Task CuteCommand(CommandContext ctx,[RemainingText][Description("The log message")] string message)
     {
-        if (ctx.User.Username == "manderz11" || ctx.User.Username == "KiritoEquz")
+        if (ctx.User.Username == Program.ownerUsername)
         {
             ctx.Client.Logger.LogWarning(message);
 

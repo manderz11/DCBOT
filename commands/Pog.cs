@@ -14,6 +14,7 @@ using DSharpPlus.Entities;
 public class Pog : BaseCommandModule
 {
     [Command("pog")]
+    [Description("Displays Pog trough a image")]
     public async Task CuteCommand(CommandContext ctx)
     {
         var msg = await new DiscordMessageBuilder()

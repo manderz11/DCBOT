@@ -25,6 +25,7 @@ namespace DCBOT
         public static string globalExtraFiles = $@"{globalPath}\extrafiles";
         public static string ownerUsername = getConfig("Owner");
 
+
         static void Main(string[] args)
         {
             MainAsync().GetAwaiter().GetResult();
@@ -99,7 +100,6 @@ namespace DCBOT
 
         }
     }
-
     class defaultconfig
     {
         public string Token { get; set; }
