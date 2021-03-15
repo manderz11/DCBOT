@@ -94,6 +94,11 @@ namespace DCBOT
 
             });
 
+            var voice = discord.UseVoiceNext(new VoiceNextConfiguration()
+            {
+
+            });
+
             cmd.RegisterCommands(Assembly.GetExecutingAssembly());
             await discord.ConnectAsync();
             await Task.Delay(-1);

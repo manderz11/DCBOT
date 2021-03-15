@@ -28,6 +28,9 @@ public class rscore : BaseCommandModule
         var thing2 = doc.DocumentNode.SelectSingleNode("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[1]/th[3]/span[1]");
         var ppgain = thing2.InnerText;
 
-        await ctx.RespondAsync($"The most recent song played is- {songname} with the pp gain of {ppgain}pp (not weighted)");
+        var acc = doc.DocumentNode.SelectSingleNode("/html/body/div/div/div/div[2]/div[2]/table/tbody/tr[1]/th[3]/span[4]");
+        var acc1 = acc.InnerText;
+
+        await ctx.RespondAsync($"The most recent song played is- {songname} with the pp gain of {ppgain}pp (not weighted) with {acc1}");
     }
 }
