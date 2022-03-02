@@ -18,7 +18,7 @@ public class profile : BaseCommandModule
 {
     [Command("profile")]
     [Description("Shows the given score saber profile description (performance points, global ranking, play count and total score)")]
-    public async Task CuteCommand(CommandContext ctx, [RemainingText][Description("Score saber profile link")] string urll)
+    public async Task ProfileCommand(CommandContext ctx, [RemainingText][Description("Score saber profile link")] string urll)
     {
         HtmlWeb web = new HtmlWeb();
         HtmlDocument doc = web.Load(urll);

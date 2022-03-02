@@ -17,7 +17,7 @@ public class pullweb : BaseCommandModule
 {
     [Command("pullweb")]
     [Description("Pulls the XPath (found in inspect element-copy) and displays it")]
-    public async Task CuteCommand(CommandContext ctx, [Description("The url")]string urll, [RemainingText][Description("The object/value path")] string xPath)
+    public async Task PullWebCommand(CommandContext ctx, [Description("The url")]string urll, [RemainingText][Description("The object/value path")] string xPath)
     {
         HtmlWeb web = new HtmlWeb();
         HtmlDocument doc = web.Load(urll);

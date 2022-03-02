@@ -14,7 +14,7 @@ public class Shutdown : BaseCommandModule
 {
     [Command("shutdown")]
     [Description("Shuts the bot down")]
-    public async Task CuteCommand(CommandContext ctx)
+    public async Task ShutdownCommand(CommandContext ctx)
     {
         if (ctx.User.Username == Program.ownerUsername)
         {

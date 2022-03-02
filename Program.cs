@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
@@ -45,19 +46,17 @@ namespace DCBOT
                     {
                         item.Value = item.Value.ToString().Replace("v1", "v2");
                     }
+
                     result = jobj.ToString();
                 }
+
                 var userObj = JObject.Parse(result);
                 var jsonval = Convert.ToString(userObj[type]);
                 return jsonval;
             }
             else if (!File.Exists(path))
             {
-                defaultconfig f = new defaultconfig()
-                {
-                    Token = "TokenHere",
-                    Owner = "Owner username here"
-                };
+                defaultconfig f = new defaultconfig() { Token = "TokenHere", Owner = "Owner username here", Oauth = "Oauth token here"};
                 string stringjson = JsonConvert.SerializeObject(f);
                 using (var tw = new StreamWriter(path, true))
                 {
@@ -75,6 +74,7 @@ namespace DCBOT
                 return "fail";
             }
         }
+
         static async Task MainAsync()
         {
             var discord = new DiscordClient(new DiscordConfiguration()
@@ -86,7 +86,7 @@ namespace DCBOT
 
             var cmd = discord.UseCommandsNext(new CommandsNextConfiguration()
             {
-                StringPrefixes = new[] { "$" }
+                StringPrefixes = new[] {"$"}
             });
 
             var interact = discord.UseInteractivity(new InteractivityConfiguration()
@@ -109,5 +109,6 @@ namespace DCBOT
     {
         public string Token { get; set; }
         public string Owner { get; set; }
+        public string Oauth { get; set; }
     }
 }

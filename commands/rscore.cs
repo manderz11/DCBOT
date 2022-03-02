@@ -17,7 +17,7 @@ public class rscore : BaseCommandModule
 {
     [Command("rscore")]
     [Description("Displays the most recent score in PP (no score support yet) by pulling from the Score Saber profile")]
-    public async Task CuteCommand(CommandContext ctx, [RemainingText][Description("Score Saber profile url")] string urll)
+    public async Task RscroeCommand(CommandContext ctx, [RemainingText][Description("Score Saber profile url")] string urll)
     {
         HtmlWeb web = new HtmlWeb();
         HtmlDocument doc = web.Load($"{urll}&sort=2");

@@ -13,7 +13,7 @@ public class Time : BaseCommandModule
 {
     [Command("time")]
     [Description("Shows the bot owner's server/machines current local time")]
-    public async Task CuteCommand(CommandContext ctx)
+    public async Task TimeCommand(CommandContext ctx)
     {
         await ctx.RespondAsync(DateTime.Now.ToString());
     }

@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext.Converters;
 using DSharpPlus.Entities;
 using DSharpPlus.VoiceNext;
-using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.Extensions.Logging;
+using YoutubeExplode;
+using YoutubeExplode.Converter;
+using YoutubeExplode.Videos.Streams;
 
 public class Sounds : BaseCommandModule
 {
@@ -38,9 +39,18 @@ public class Sounds : BaseCommandModule
         var connection = vnext.GetConnection(ctx.Guild);
 
         var transmit = connection.GetTransmitSink();
+        while (connection.IsPlaying)
+        {
+            await connection.WaitForPlaybackFinishAsync();
+        }
+
         if (path == null || path == "")
         {
             await ctx.RespondAsync("No files >: (");
+        } 
+        else if (connection.IsPlaying == true)
+        {
+            await ctx.RespondAsync("Already playing!");
         }
         else
         {
@@ -56,6 +66,73 @@ public class Sounds : BaseCommandModule
             }
         }
         
+    }
+    [Command("PlayFromURL")]
+    [Description("Plays from given youtube url")]
+    public async Task PlayFromURLCommand(CommandContext ctx, string URL)
+    {
+        var vnext = ctx.Client.GetVoiceNext();
+        var connection = vnext.GetConnection(ctx.Guild);
+
+        var transmit = connection.GetTransmitSink();
+
+        if (connection.IsPlaying == true)
+        {
+            await ctx.RespondAsync("Already playing!");
+        }
+        else
+        {
+            
+            await ctx.RespondAsync("Starting download!");
+            if (File.Exists(@"./audio.mp3"))
+            {
+                File.Delete(@"./audio.mp3");
+            }
+            var youtube = new YoutubeClient();
+
+            await youtube.Videos.DownloadAsync(URL, "audio.mp3", o => o
+                .SetPreset(ConversionPreset.UltraFast) // change preset
+                .SetFFmpegPath("./ffmpeg.exe") // custom FFmpeg location
+            );
+
+            /* previous version
+             * var streamManifest = await youtube.Videos.Streams.GetManifestAsync(ID);
+            var streamInfo = streamManifest
+                .GetAudioOnlyStreams()
+                .Where(s => s.Container == Container.Mp3)
+                .GetWithHighestBitrate();
+
+            await youtube.Videos.Streams.DownloadAsync(streamInfo, $"audio.{streamInfo.Container}");*/
+
+            await ctx.RespondAsync("Downloaded! Playing...");
+
+            while (connection.IsPlaying)
+            {
+                await connection.WaitForPlaybackFinishAsync();
+            }
+
+            var pcm = ConvertAudioToPcm(@"./audio.mp3");
+            await pcm.CopyToAsync(transmit, cancellationToken: new CancellationToken());
+            await pcm.DisposeAsync();
+        }
+    }
+    [Command("stop")]
+    [Description("Stops the current playback")]
+    public async Task StopCommand(CommandContext ctx)
+    {
+        await ctx.RespondAsync("Stopping...");
+        var vnext = ctx.Client.GetVoiceNext();
+        var connection = vnext.GetConnection(ctx.Guild);
+        var transmit = connection.GetTransmitSink();
+        if (connection.IsPlaying)
+        {
+            if (processId != 0)
+            {
+                Process process = Process.GetProcessById(processId);
+                process.Kill();
+            }
+            
+        }
     }
     [Command("pause")]
     [Description("Pauses currently playing song")]
@@ -102,12 +179,14 @@ public class Sounds : BaseCommandModule
     }
     [Command("leave")]
     [Description("Leaves the current voice channel")]
-    public async Task LeaveCommand(CommandContext ctx)
+    public async Task LeavingCommand(CommandContext ctx)
     {
         var vnext = ctx.Client.GetVoiceNext();
         var connection = vnext.GetConnection(ctx.Guild);
         connection.Disconnect();
+        await ctx.RespondAsync("ok : (");
     }
+    public int processId = 0;
     private Stream ConvertAudioToPcm(string filePath)
     {
         var ffmpeg = Process.Start(new ProcessStartInfo
@@ -118,6 +197,7 @@ public class Sounds : BaseCommandModule
             UseShellExecute = false
         });
 
+        processId = ffmpeg.Id;
         return ffmpeg.StandardOutput.BaseStream;
     }
 }

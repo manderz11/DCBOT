@@ -17,7 +17,7 @@ public class Log : BaseCommandModule
 {
     [Command("log")]
     [Description("Sends a log in console")]
-    public async Task CuteCommand(CommandContext ctx,[RemainingText][Description("The log message")] string message)
+    public async Task DebugCommand(CommandContext ctx,[RemainingText][Description("The log message")] string message)
     {
         if (ctx.User.Username == Program.ownerUsername)
         {
