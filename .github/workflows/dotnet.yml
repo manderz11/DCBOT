@@ -26,5 +26,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ steps.Build.outputs.filename }}
-        path: ./DCBOT/bin/builds
+        path: ./DCBOT/bin/Release/netcoreapp3.1
     
